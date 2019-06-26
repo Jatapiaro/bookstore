@@ -1,8 +1,14 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
-@import 'variables';
+// Base
+@import './base/base';
+@import './base/variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// App Styles
+@import '~tabler-react/dist/Tabler.css';
+@import "~font-awesome/scss/font-awesome";
+@import '~react-toastify/dist/ReactToastify.min.css';
+
+// Components
+@import './components/navbar';
