@@ -42,4 +42,17 @@ class RoomsController extends BaseController {
         return new RoomResource($room);
     }
 
+    /**
+     * Stores a newly created resource on storage
+     *
+     * @param  \Illuminate\Http\Request $req
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $req) {
+        $vb = Room::ValidationBook();
+        $data = $req->validate($vb['rules'], $vb['messages']);
+        $room = $this->roomService->store($data);
+        return new RoomResource($room);
+    }
+
 }

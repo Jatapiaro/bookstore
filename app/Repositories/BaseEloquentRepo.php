@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Interfaces\RepoInterface;
 use DB;
 
-/**
- * THIS HASN'T BEEN IMPLEMENTED YET
- * IT STILL USING THE DEFAULT ORM BEHAVIOUR
- */
 class BaseEloquentRepo implements RepoInterface {
 
     /**
@@ -24,6 +20,10 @@ class BaseEloquentRepo implements RepoInterface {
      * @var String
      */
     protected $tableName;
+    /**
+     * An array with all the fillable elements of a model
+     */
+    protected $fillableAttributes;
 
     /**
      * Returns all the items on this repo
@@ -31,6 +31,7 @@ class BaseEloquentRepo implements RepoInterface {
      * @return collection
      */
     public function all() {
+        $this->buildInsertQuery();
         $query = "SELECT * FROM " . $this->tableName . ";";
         $query = DB::select(DB::raw($query));
         return $this->model->hydrate($query);
@@ -43,7 +44,60 @@ class BaseEloquentRepo implements RepoInterface {
      * @return StdClass
      */
     public function create(array $data) {
-        return $this->model->create($data);
+        return $this->buildInsertQuery($data);
+    }
+
+    /**
+     * Insert the given data
+     * This method creates a method that can be used by any model
+     * Using the $fillable array of a model it will create
+     * an insert string like 'INSERT INTO table (the, cols) values (?, ?)'
+     * Then, with the passed data it will generate the array with data to be inserted
+     */
+    private function buildInsertQuery($data) {
+        /**
+         * The insert needs a string of (?, ?) to indicate the
+         * values to insert
+         */
+        $questionMarks = [];
+        for ($i = 0; $i < sizeof($this->fillableAttributes); $i++) {
+            $questionMarks[] = '?';
+        }
+        /*
+        * We generate the string containing the fillable columns
+        * (col1, col2, ...colN) to be inserted
+        */
+        $columns = implode(",", $this->fillableAttributes);
+        /**
+         * We join all the neccesary '?' in a string like (?, ?, .. ?)
+         */
+        $questionMarks = implode(",", $questionMarks);
+        $query = "INSERT INTO ";
+        $query .= $this->tableName;
+        $query .= " (" . $columns . ") values (";
+        $query .= $questionMarks;
+        $query .= ')';
+
+        /**
+         * Then we build the array with the data
+         * to be inserted
+         */
+        $insert = [];
+        foreach ($this->fillableAttributes as $attr) {
+            $insert[] = $data[$attr];
+        }
+        /**
+         * Insert only return a boolean
+         */
+        $result = DB::insert(
+            $query,
+            $insert
+        );
+        /*
+        * We get the last inserted ID and passed it
+        * to our previosly implented function
+        */
+        return $this->find(DB::getPdo()->lastInsertId());
     }
 
     /**

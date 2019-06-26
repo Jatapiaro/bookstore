@@ -25,6 +25,17 @@ class RoomService {
     }
 
     /**
+     * Stores the given item
+     *
+     * @return App\Models\Room
+     */
+    public function store($data) {
+        $this->validate($data);
+        $item = $this->repo->create($data['room']);
+        return $item;
+    }
+
+    /**
      * Validate the given data using the validation book of the model
      *
      * @param array $data
@@ -33,7 +44,7 @@ class RoomService {
      * @return boolean
      */
     public function validate($data, $except = [], $append = []) {
-        $vb = Concert::ValidationBook($except, $append);
+        $vb = Room::ValidationBook($except, $append);
         $validator = Validator::make($data, $vb['rules'], $vb['messages']);
         if ($validator->fails()) {
             $errors = $validator->errors();

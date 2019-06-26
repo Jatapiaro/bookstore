@@ -10,4 +10,9 @@ class BaseModel extends Model {
         return with(new static)->getTable();
     }
 
+    public static function getFillableAttributes()
+    {
+        return with(new static)->getFillable();
+    }
+
 }
