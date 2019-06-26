@@ -53,8 +53,10 @@ class BaseEloquentRepo implements RepoInterface {
      * Using the $fillable array of a model it will create
      * an insert string like 'INSERT INTO table (the, cols) values (?, ?)'
      * Then, with the passed data it will generate the array with data to be inserted
+     * @param array $data
+     * @return StdClass
      */
-    private function buildInsertQuery($data) {
+    private function buildInsertQuery(array $data) {
         /**
          * The insert needs a string of (?, ?) to indicate the
          * values to insert
@@ -76,7 +78,7 @@ class BaseEloquentRepo implements RepoInterface {
         $query .= $this->tableName;
         $query .= " (" . $columns . ") values (";
         $query .= $questionMarks;
-        $query .= ')';
+        $query .= ');';
 
         /**
          * Then we build the array with the data
@@ -84,7 +86,7 @@ class BaseEloquentRepo implements RepoInterface {
          */
         $insert = [];
         foreach ($this->fillableAttributes as $attr) {
-            $insert[] = $data[$attr];
+            $insert[] = (isset($data[$attr]))? $data[$attr] : NULL;
         }
         /**
          * Insert only return a boolean
@@ -108,7 +110,36 @@ class BaseEloquentRepo implements RepoInterface {
      * @return boolean
      */
     public function update(array $data, $id) {
-        return $this->model->where('id', $id)->update($data);
+        return $this->buildUpdateQuery($data, $id);
+    }
+
+    /**
+     * Updates the data of a given element
+     * This will generate a query like:
+     * UPDATE table SET col = ?, ... colN = ? WHERE id = ?;
+     * @param array $data
+     * @param integer $id
+     * @return StdClass
+     */
+    private function buildUpdateQuery(array $data, $id) {
+
+        $columnsToSet = [];
+        $set = [];
+        foreach ($this->fillableAttributes as $attr) {
+            $columnsToSet[] = $attr . ' = ?';
+            $set[] = (isset($data[$attr]))? $data[$attr] : NULL;
+        }
+        $set[] = $id;
+        $columnsToSet = implode(", ", $columnsToSet);
+
+        $query = 'UPDATE ';
+        $query .= $this->tableName . " SET ";
+        $query .= $columnsToSet;
+        $query .= " WHERE id = ?;";
+
+        $result = DB::update($query, $set);
+        return $this->find($id);
+
     }
 
     /**

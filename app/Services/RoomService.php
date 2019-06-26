@@ -36,6 +36,19 @@ class RoomService {
     }
 
     /**
+     * Updates the row with id = $room with the $data
+     *
+     * @param array $data
+     * @param integer $room
+     * @return App\Models\Concert
+     */
+    public function update($data, $room) {
+        $this->validate($data);
+        $item = $this->repo->update($data['room'], $room);
+        return Room::find(1);
+    }
+
+    /**
      * Validate the given data using the validation book of the model
      *
      * @param array $data

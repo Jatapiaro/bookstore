@@ -35,6 +35,7 @@ class RoomsController extends BaseController {
     /**
      * Display a listing of the resource.
      *
+     * @param integer $room
      * @return \Illuminate\Http\Response
      */
     public function show(Request $req, $room) {
@@ -52,6 +53,27 @@ class RoomsController extends BaseController {
         $vb = Room::ValidationBook();
         $data = $req->validate($vb['rules'], $vb['messages']);
         $room = $this->roomService->store($data);
+        return new RoomResource($room);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param integer $room
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $req, $room)
+    {
+        /**
+         * Throw the ModelNotFoundException if the
+         * desired element does not exists avoiding
+         * extra validations
+         */
+        $prevData = $this->repo->find($room);
+        $vb = Room::ValidationBook();
+        $data = $req->validate($vb['rules'], $vb['messages']);
+        $room = $this->roomService->update($data, $room);
         return new RoomResource($room);
     }
 
