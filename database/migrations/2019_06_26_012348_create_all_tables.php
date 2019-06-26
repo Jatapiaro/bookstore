@@ -50,9 +50,10 @@ class CreateAllTables extends Migration
         Schema::create('authors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->timestamps();
         });
 
-        Schema::create('book_author', function (Blueprint $table) {
+        Schema::create('author_book', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('book_id')
