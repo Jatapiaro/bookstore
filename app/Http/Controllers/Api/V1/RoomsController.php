@@ -33,7 +33,7 @@ class RoomsController extends BaseController {
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the resource with id = $room
      *
      * @param integer $room
      * @return \Illuminate\Http\Response

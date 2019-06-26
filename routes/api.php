@@ -17,4 +17,6 @@ function()
     Route::apiResource('authors', 'AuthorsController');
     /* Rooms */
     Route::apiResource('rooms', 'RoomsController');
+    /* Sections */
+    Route::apiResource('sections', 'SectionsController');
 });

@@ -7,44 +7,44 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Validator;
 
-use App\Models\Author;
+use App\Models\Section;
 
-use App\Repositories\Interfaces\AuthorRepoInterface;
+use App\Repositories\Interfaces\SectionRepoInterface;
 
-class AuthorService {
+class SectionService {
 
     /**
      * Repository
      *
-     * @var AuthorRepoInteface
+     * @var SectionRepoInteface
      */
     private $repo;
 
-    public function __construct(AuthorRepoInterface $repo) {
+    public function __construct(SectionRepoInterface $repo) {
         $this->repo = $repo;
     }
 
     /**
      * Stores the given item
      *
-     * @return App\Models\Author
+     * @return App\Models\Section
      */
     public function store($data) {
         $this->validate($data);
-        $item = $this->repo->create($data['author']);
+        $item = $this->repo->create($data['section']);
         return $item;
     }
 
     /**
-     * Updates the row with id = $author with the $data
+     * Updates the row with id = $section with the $data
      *
      * @param array $data
-     * @param integer $author
-     * @return App\Models\Author
+     * @param integer $section
+     * @return App\Models\Section
      */
-    public function update($data, $author) {
+    public function update($data, $section) {
         $this->validate($data);
-        $item = $this->repo->update($data['author'], $author);
+        $item = $this->repo->update($data['section'], $section);
         return $item;
     }
 
@@ -57,7 +57,7 @@ class AuthorService {
      * @return boolean
      */
     public function validate($data, $except = [], $append = []) {
-        $vb = Author::ValidationBook($except, $append);
+        $vb = Section::ValidationBook($except, $append);
         $validator = Validator::make($data, $vb['rules'], $vb['messages']);
         if ($validator->fails()) {
             $errors = $validator->errors();

@@ -40,7 +40,7 @@ class RoomService {
      *
      * @param array $data
      * @param integer $room
-     * @return App\Models\Concert
+     * @return App\Models\Room
      */
     public function update($data, $room) {
         $this->validate($data);

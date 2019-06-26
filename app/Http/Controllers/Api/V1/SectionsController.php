@@ -5,21 +5,21 @@ use Illuminate\Http\Request;
 use Auth;
 
 use App\Http\Controllers\Api\V1\BaseController;
-use App\Http\Resources\Author as AuthorResource;
-use App\Models\Author;
-use App\Repositories\Interfaces\AuthorRepoInterface;
-use App\Services\AuthorService;
+use App\Http\Resources\Section as SectionResource;
+use App\Models\Section;
+use App\Repositories\Interfaces\SectionRepoInterface;
+use App\Services\SectionService;
 
 use Illuminate\Support\Arr;
 
-class AuthorsController extends BaseController {
+class SectionsController extends BaseController {
 
     public function __construct(
-        AuthorRepoInterface $repo,
-        AuthorService $authorService)
+        SectionRepoInterface $repo,
+        SectionService $sectionService)
     {
         $this->repo = $repo;
-        $this->authorService = $authorService;
+        $this->sectionService = $sectionService;
     }
 
     /**
@@ -28,19 +28,19 @@ class AuthorsController extends BaseController {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $req) {
-        $authors = $this->repo->all();
-        return AuthorResource::collection($authors);
+        $sections = $this->repo->all();
+        return SectionResource::collection($sections);
     }
 
     /**
-     * Display the resource with id = $author
+     * Display the resource with id = $section
      *
-     * @param integer $author
+     * @param integer $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $req, $author) {
-        $author = $this->repo->find($author);
-        return new AuthorResource($author);
+    public function show(Request $req, $section) {
+        $section = $this->repo->find($section);
+        return new SectionResource($section);
     }
 
     /**
@@ -50,49 +50,49 @@ class AuthorsController extends BaseController {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $req) {
-        $vb = Author::ValidationBook();
+        $vb = Section::ValidationBook();
         $data = $req->validate($vb['rules'], $vb['messages']);
-        $author = $this->authorService->store($data);
-        return new AuthorResource($author);
+        $section = $this->sectionService->store($data);
+        return new SectionResource($section);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param integer $author
+     * @param integer $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, $author)
+    public function update(Request $req, $section)
     {
         /**
          * Throw the ModelNotFoundException if the
          * desired element does not exists avoiding
          * extra validations
          */
-        $prevData = $this->repo->find($author);
-        $vb = Author::ValidationBook();
+        $prevData = $this->repo->find($section);
+        $vb = Section::ValidationBook();
         $data = $req->validate($vb['rules'], $vb['messages']);
-        $author = $this->authorService->update($data, $author);
-        return new AuthorResource($author);
+        $section = $this->sectionService->update($data, $section);
+        return new SectionResource($section);
     }
 
     /**
      * Deletes an stored item
      *
      * @param  \Illuminate\Http\Request $req
-     * @param integer $author
+     * @param integer $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $req, $author) {
+    public function destroy(Request $req, $section) {
         /**
          * Throw the ModelNotFoundException if the
          * desired element does not exists avoiding
          * extra validations
          */
-        $deletedAuthor = $this->repo->find($author);
-        $this->repo->delete($author);
-        return new AuthorResource($deletedAuthor);
+        $deletedSection = $this->repo->find($section);
+        $this->repo->delete($section);
+        return new SectionResource($deletedSection);
     }
 
 }
