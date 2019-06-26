@@ -15,8 +15,10 @@ function()
 {
     /* Authors */
     Route::apiResource('authors', 'AuthorsController');
-    /* Authors */
+    /* Books */
     Route::apiResource('books', 'BooksController');
+    Route::post('books/{book}/authors/{author}', 'BooksController@authors')
+        ->name('books.authors');
     /* Rooms */
     Route::apiResource('rooms', 'RoomsController');
     /* Sections */
