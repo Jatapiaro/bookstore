@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-use Auth;
 
 use App\Http\Controllers\Api\V1\BaseController;
 use App\Http\Resources\Section as SectionResource;

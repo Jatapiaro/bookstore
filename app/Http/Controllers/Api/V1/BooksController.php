@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Api\V1\BaseController;
-use App\Http\Resources\Author as AuthorResource;
-use App\Models\Author;
-use App\Repositories\Interfaces\AuthorRepoInterface;
-use App\Services\AuthorService;
+use App\Http\Resources\Book as BookResource;
+use App\Models\Book;
+use App\Repositories\Interfaces\BookRepoInterface;
+use App\Services\BookService;
 
 use Illuminate\Support\Arr;
 
-class AuthorsController extends BaseController {
+class BooksController extends BaseController {
 
     public function __construct(
-        AuthorRepoInterface $repo,
-        AuthorService $authorService)
+        BookRepoInterface $repo,
+        BookService $bookService)
     {
         $this->repo = $repo;
-        $this->authorService = $authorService;
+        $this->bookService = $bookService;
     }
 
     /**
@@ -27,19 +27,19 @@ class AuthorsController extends BaseController {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $req) {
-        $authors = $this->repo->all();
-        return AuthorResource::collection($authors);
+        $books = $this->repo->all();
+        return BookResource::collection($books);
     }
 
     /**
-     * Display the resource with id = $author
+     * Display the resource with id = $book
      *
-     * @param integer $author
+     * @param integer $book
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $req, $author) {
-        $author = $this->repo->find($author);
-        return new AuthorResource($author);
+    public function show(Request $req, $book) {
+        $book = $this->repo->find($book);
+        return new BookResource($book);
     }
 
     /**
@@ -49,49 +49,49 @@ class AuthorsController extends BaseController {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $req) {
-        $vb = Author::ValidationBook();
+        $vb = Book::ValidationBook();
         $data = $req->validate($vb['rules'], $vb['messages']);
-        $author = $this->authorService->store($data);
-        return new AuthorResource($author);
+        $book = $this->bookService->store($data);
+        return new BookResource($book);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param integer $author
+     * @param integer $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, $author)
+    public function update(Request $req, $book)
     {
         /**
          * Throw the ModelNotFoundException if the
          * desired element does not exists avoiding
          * extra validations
          */
-        $prevData = $this->repo->find($author);
-        $vb = Author::ValidationBook();
+        $prevData = $this->repo->find($book);
+        $vb = Book::ValidationBook();
         $data = $req->validate($vb['rules'], $vb['messages']);
-        $author = $this->authorService->update($data, $author);
-        return new AuthorResource($author);
+        $book = $this->bookService->update($data, $book);
+        return new BookResource($book);
     }
 
     /**
      * Deletes an stored item
      *
      * @param  \Illuminate\Http\Request $req
-     * @param integer $author
+     * @param integer $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $req, $author) {
+    public function destroy(Request $req, $book) {
         /**
          * Throw the ModelNotFoundException if the
          * desired element does not exists avoiding
          * extra validations
          */
-        $deletedAuthor = $this->repo->find($author);
-        $this->repo->delete($author);
-        return new AuthorResource($deletedAuthor);
+        $deletedBook = $this->repo->find($book);
+        $this->repo->delete($book);
+        return new BookResource($deletedBook);
     }
 
 }
