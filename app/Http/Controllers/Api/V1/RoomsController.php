@@ -77,4 +77,22 @@ class RoomsController extends BaseController {
         return new RoomResource($room);
     }
 
+    /**
+     * Deletes an stored item
+     *
+     * @param  \Illuminate\Http\Request $req
+     * @param integer $room
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $req, $room) {
+        /**
+         * Throw the ModelNotFoundException if the
+         * desired element does not exists avoiding
+         * extra validations
+         */
+        $deletedRoom = $this->repo->find($room);
+        $this->repo->delete($room);
+        return new RoomResource($deletedRoom);
+    }
+
 }

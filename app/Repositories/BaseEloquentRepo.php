@@ -149,7 +149,21 @@ class BaseEloquentRepo implements RepoInterface {
      * @return mixed
      */
     public function delete($id) {
-        return $this->model->destroy($id);
+        $this->buildDeleteQuery($id);
+        return null;//$this->model->destroy($id);
+    }
+
+    /**
+     * Build the delete query
+     * It will generate a query like this:
+     * DELETE FROM table WHERE id = ?;
+     * @param integer $id
+     */
+    private function buildDeleteQuery($id) {
+        $query = "DELETE FROM ";
+        $query .= $this->tableName;
+        $query .= " WHERE id = ?;";
+        $result = DB::delete($query, [$id]);
     }
 
     /**
