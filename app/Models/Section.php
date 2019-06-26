@@ -2,6 +2,10 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Room;
+use App\Models\Book;
+
+use DB;
 
 class Section extends BaseModel
 {
@@ -29,6 +33,36 @@ class Section extends BaseModel
         'name',
         'room_id'
     ];
+
+    /**
+     * Defines manually the relationship between this Section
+     * and his room
+     * @return Room
+     */
+    public function customRoom() {
+        $query = "SELECT r.*
+            FROM Sections s
+            JOIN rooms r
+            ON r.id = s.room_id
+            WHERE s.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $this->id]);
+        return Room::hydrate($query)->first();
+    }
+
+    /**
+     * Defines manually the relationship between this Section
+     * and his books
+     * @return Collection
+     */
+    public function customBooks() {
+        $query = "SELECT b.*
+            FROM sections s
+            JOIN books b
+            ON b.section_id = s.id
+            WHERE s.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $this->id]);
+        return Book::hydrate($query);
+    }
 
     /**
      * Returns an array that contains two indexes:

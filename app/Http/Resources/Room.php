@@ -14,6 +14,8 @@ class Room extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['sections'] = $this->customSections();
+        return $data;
     }
 }

@@ -2,6 +2,10 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Section;
+use App\Models\Author;
+
+use DB;
 
 class Book extends BaseModel
 {
@@ -33,6 +37,37 @@ class Book extends BaseModel
         'release_date',
         'section_id'
     ];
+
+    /**
+     * Defines manually the relationship between this Book
+     * and his section
+     * @return Section
+     */
+    public function customSection() {
+        $query = "SELECT s.*
+            FROM books b
+            JOIN sections s
+            ON s.id = b.section_id
+            WHERE b.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $this->id]);
+        return Section::hydrate($query)->first();
+    }
+
+    /**
+     * Defines manually the relationship
+     * between the book and his authors
+     *
+     * @return Collection
+     */
+    public function customAuthors() {
+        $query = "SELECT a.*
+            FROM authors a, books b, author_book ab
+            WHERE b.id = ab.book_id
+            AND a.id = ab.author_id
+            AND b.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $this->id]);
+        return Author::hydrate($query);
+    }
 
     /**
      * Defined the ORM relationship between

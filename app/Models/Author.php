@@ -2,6 +2,8 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Book;
+use DB;
 
 class Author extends BaseModel
 {
@@ -30,10 +32,26 @@ class Author extends BaseModel
     ];
 
     /**
+     * Defines manually the relationship
+     * between an author and his books
+     *
+     * @return Collection
+     */
+    public function customBooks() {
+        $query = "SELECT b.*
+            FROM authors a, books b, author_book ab
+            WHERE b.id = ab.book_id
+            AND a.id = ab.author_id
+            AND a.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $this->id]);
+        return Book::hydrate($query);
+    }
+
+    /**
      * Defines the ORM relationship between
      * and Author and his Books
      */
-    public function authors() {
+    public function books() {
         return $this->hasMany('App\Models\Book');
     }
 

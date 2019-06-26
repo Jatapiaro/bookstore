@@ -2,6 +2,8 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Section;
+use DB;
 
 class Room extends BaseModel
 {
@@ -29,6 +31,21 @@ class Room extends BaseModel
         'name',
         'meters'
     ];
+
+    /**
+     * Defines manually the relationship between a Room
+     * and his sections
+     * @return Collection
+     */
+    public function customSections() {
+        $query = "SELECT s.*
+            FROM rooms r
+            JOIN sections s
+            ON s.room_id = r.id
+            WHERE r.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $this->id]);
+        return Section::hydrate($query);
+    }
 
     /**
      * Returns an array that contains two indexes:
