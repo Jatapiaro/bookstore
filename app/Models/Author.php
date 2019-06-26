@@ -51,8 +51,8 @@ class Author extends BaseModel
             'author.name' => 'required|string',
         ];
         $book['messages'] = [
-            'author.name.required' => 'El nombre de la sala es requerido',
-            'author.name.string' => 'El nombre de la sala debe ser un texto'
+            'author.name.required' => 'El nombre del autor es requerido',
+            'author.name.string' => 'El nombre del autor debe ser un texto'
         ];
         if (!empty($except)) {
             $except = array_flip($except);

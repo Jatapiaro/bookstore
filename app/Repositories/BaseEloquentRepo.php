@@ -31,7 +31,6 @@ class BaseEloquentRepo implements RepoInterface {
      * @return collection
      */
     public function all() {
-        $this->buildInsertQuery();
         $query = "SELECT * FROM " . $this->tableName . ";";
         $query = DB::select(DB::raw($query));
         return $this->model->hydrate($query);

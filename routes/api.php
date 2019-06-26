@@ -13,8 +13,8 @@ Route::group(
     ],
 function()
 {
-    /*
-    * Rooms
-    */
+    /* Authors */
+    Route::apiResource('authors', 'AuthorsController');
+    /* Rooms */
     Route::apiResource('rooms', 'RoomsController');
 });

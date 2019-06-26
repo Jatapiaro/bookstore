@@ -7,44 +7,44 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Validator;
 
-use App\Models\Room;
+use App\Models\Author;
 
-use App\Repositories\Interfaces\RoomRepoInterface;
+use App\Repositories\Interfaces\AuthorRepoInterface;
 
-class RoomService {
+class AuthorService {
 
     /**
      * Repository
      *
-     * @var RoomRepoInteface
+     * @var AuthorRepoInteface
      */
     private $repo;
 
-    public function __construct(RoomRepoInterface $repo) {
+    public function __construct(AuthorRepoInterface $repo) {
         $this->repo = $repo;
     }
 
     /**
      * Stores the given item
      *
-     * @return App\Models\Room
+     * @return App\Models\Author
      */
     public function store($data) {
         $this->validate($data);
-        $item = $this->repo->create($data['room']);
+        $item = $this->repo->create($data['author']);
         return $item;
     }
 
     /**
-     * Updates the row with id = $room with the $data
+     * Updates the row with id = $author with the $data
      *
      * @param array $data
-     * @param integer $room
+     * @param integer $author
      * @return App\Models\Concert
      */
-    public function update($data, $room) {
+    public function update($data, $author) {
         $this->validate($data);
-        $item = $this->repo->update($data['room'], $room);
+        $item = $this->repo->update($data['author'], $author);
         return $item;
     }
 
@@ -57,7 +57,7 @@ class RoomService {
      * @return boolean
      */
     public function validate($data, $except = [], $append = []) {
-        $vb = Room::ValidationBook($except, $append);
+        $vb = Author::ValidationBook($except, $append);
         $validator = Validator::make($data, $vb['rules'], $vb['messages']);
         if ($validator->fails()) {
             $errors = $validator->errors();
