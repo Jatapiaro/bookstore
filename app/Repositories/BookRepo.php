@@ -57,6 +57,13 @@ class BookRepo extends BaseEloquentRepo implements BookRepoInterface
         );
     }
 
+    /**
+     * Attach an author to the book
+     *
+     * @param integer $bookID
+     * @param integer $authorID
+     * @return boolean relationship_exists
+     */
     private function relationShipExists($bookID, $authorID) {
         $query = "SELECT * from author_book WHERE book_id = ? AND author_id = ?;";
         $data = [$bookID, $authorID];
