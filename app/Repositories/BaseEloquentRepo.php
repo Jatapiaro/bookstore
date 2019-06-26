@@ -4,18 +4,26 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Repositories\Interfaces\RepoInterface;
+use DB;
 
 /**
  * THIS HASN'T BEEN IMPLEMENTED YET
  * IT STILL USING THE DEFAULT ORM BEHAVIOUR
  */
 class BaseEloquentRepo implements RepoInterface {
+
     /**
      * The model for this repo
      *
      * @var Illuminate\Database\Eloquent\Model
      */
     protected $model;
+    /**
+     * The table name of the given model
+     *
+     * @var String
+     */
+    protected $tableName;
 
     /**
      * Returns all the items on this repo
@@ -23,7 +31,9 @@ class BaseEloquentRepo implements RepoInterface {
      * @return collection
      */
     public function all() {
-        return $this->model->all();
+        $query = "SELECT * FROM " . $this->tableName . ";";
+        $query = DB::select(DB::raw($query));
+        return $this->model->hydrate($query);
     }
 
     /**
@@ -64,10 +74,12 @@ class BaseEloquentRepo implements RepoInterface {
      * @return StdClass
      */
     public function find($id) {
-        if (null == $element = $this->model->find($id)) {
+        $query = "SELECT t.* FROM " . $this->tableName . " t WHERE t.id = :id;";
+        $query = DB::select(DB::raw($query), ['id' => $id]);
+        if (sizeof($query) == 0) {
             throw new ModelNotFoundException("The element with the {$id} was not found");
         }
-        return $element;
+        return $this->model->hydrate($query)->first();
     }
 
     /**

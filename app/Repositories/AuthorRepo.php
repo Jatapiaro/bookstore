@@ -12,5 +12,6 @@ class AuthorRepo extends BaseEloquentRepo implements AuthorRepoInterface
 {
     public function __construct(Author $entity) {
         $this->model = $entity;
+        $this->tableName = $entity->getTableName();
     }
 }

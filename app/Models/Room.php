@@ -1,9 +1,9 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Room extends Model
+class Room extends BaseModel
 {
 
     /**

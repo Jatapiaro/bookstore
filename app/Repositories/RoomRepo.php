@@ -12,5 +12,6 @@ class RoomRepo extends BaseEloquentRepo implements RoomRepoInterface
 {
     public function __construct(Room $entity) {
         $this->model = $entity;
+        $this->tableName = $entity->getTableName();
     }
 }
