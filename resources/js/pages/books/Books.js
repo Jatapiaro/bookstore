@@ -8,6 +8,7 @@ import DeleteModal from '../../components/DeleteModal';
 import Book from '../../models/Book';
 
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 export default class Books extends Component {
 
@@ -77,7 +78,7 @@ export default class Books extends Component {
                 let books = this.state.books;
                 books.splice(this.state.modal.index, 1);
                 this.setState({ books: books });
-                toast.success('La sala se ha eliminado!');
+                toast.success('El libro se ha eliminado!');
                 this.resetModal();
             })
             .catch(err => {
@@ -139,7 +140,7 @@ export default class Books extends Component {
                                                 {b.number_of_pages}
                                             </Table.Col>
                                             <Table.Col>
-                                                {b.release_date}
+                                                {moment(b.release_date).format("DD-MM-YYYY")}
                                             </Table.Col>
                                             <Table.Col>
                                                 {

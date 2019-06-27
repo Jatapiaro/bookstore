@@ -21,7 +21,9 @@ export default class CreateSection extends Component {
     componentWillMount() {
         this.props.roomService.index()
             .then(res => {
-                this.setState({rooms: res});
+                let section = this.state.section;
+                section.room_id = res[0].id;
+                this.setState({rooms: res, section: section});
             })
             .catch(err => {
                 toast.error('¡Operación fallida!, inténtalo nuevamente');
