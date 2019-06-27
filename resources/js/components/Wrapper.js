@@ -18,10 +18,16 @@ import Rooms from '../pages/rooms/Rooms';
 import CreateRoom from '../pages/rooms/CreateRoom';
 import EditRoom from '../pages/rooms/EditRoom';
 
+// Sections
+import Sections from '../pages/sections/Sections';
+import CreateSection from '../pages/sections/CreateSection';
+import EditSection from '../pages/sections/EditSection';
+
 // Services
 import HttpService from '../services/HttpService';
 import AuthorService from '../services/AuthorService';
 import RoomService from '../services/RoomService';
+import SectionService from '../services/SectionService';
 
 // Toast
 import { ToastContainer } from 'react-toastify';
@@ -34,6 +40,7 @@ export default class Wrapper extends Component {
         this.httpService = new HttpService();
         this.authorService = new AuthorService(this.httpService);
         this.roomService = new RoomService(this.httpService);
+        this.sectionService = new SectionService(this.httpService);
     }
 
     render() {
@@ -52,7 +59,7 @@ export default class Wrapper extends Component {
                                 }
                                 exact={true} />
 
-                            {/* ============= Authord =========== */}
+                            {/* ============= Authors =========== */}
                             <Route path="/authors"
                                 render={(props) =>
                                     <Authors
@@ -100,6 +107,34 @@ export default class Wrapper extends Component {
                                     <EditRoom
                                         {...props}
                                         roomService={this.roomService}
+                                    />
+                                }
+                                exact={true} />
+
+                            {/* ============= Sections =========== */}
+                            <Route path="/sections"
+                                render={(props) =>
+                                    <Sections
+                                        {...props}
+                                        sectionService={this.sectionService}
+                                    />
+                                }
+                                exact={true} />
+                            <Route path="/sections/create"
+                                render={(props) =>
+                                    <CreateSection
+                                        {...props}
+                                        roomService={this.roomService}
+                                        sectionService={this.sectionService}
+                                    />
+                                }
+                                exact={true} />
+                            <Route path="/sections/:id/edit"
+                                render={(props) =>
+                                    <EditSection
+                                        {...props}
+                                        roomService={this.roomService}
+                                        sectionService={this.sectionService}
                                     />
                                 }
                                 exact={true} />

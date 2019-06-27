@@ -15,6 +15,7 @@ export default class Navbar extends Component {
             new NavLink('Home', 'fa fa-home', '/', true),
             new NavLink('Autores', 'fa fa-users', '/authors'),
             new NavLink('Salas', 'fa fa-bank', '/rooms'),
+            new NavLink('Secciones', 'fa fa-tasks', '/sections'),
         ];
     }
 

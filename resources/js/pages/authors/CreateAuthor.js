@@ -43,7 +43,6 @@ export default class CreateAuthor extends Component {
                 this.props.history.push('/authors');
             })
             .catch(err => {
-                console.log(err.errors);
                 this.setState({ errors: err.errors });
                 toast.error("¡Solicitud fallida! revisa el formulario");
             });

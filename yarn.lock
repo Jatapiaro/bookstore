@@ -5393,7 +5393,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.6, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5536,6 +5536,14 @@ rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-bootstrap4-modal@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-bootstrap4-modal/-/react-bootstrap4-modal-1.7.2.tgz#1ad3fab03a8bc4a55c32955b2fedb4b36c4f2398"
+  integrity sha512-eDBOMZCySVBtMErpnS3z/NKTJYxZ5XJWJXZgheHBqlAREaQx7OGxlIg9ncw4LwBpkiY9B73Vq6QHCVVCDrFGeA==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
 
 react-dom@^16.2.0:
   version "16.8.6"

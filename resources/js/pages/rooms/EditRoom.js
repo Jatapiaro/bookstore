@@ -26,7 +26,6 @@ export default class EditRoom extends Component {
                 this.setState({room: room});
             })
             .catch(err => {
-                console.log(err);
                 toast.error("¡Solicitud fallida!");
             });
     }
@@ -60,7 +59,6 @@ export default class EditRoom extends Component {
                 this.props.history.push('/rooms');
             })
             .catch(err => {
-                console.log(err.errors);
                 this.setState({ errors: err.errors });
                 toast.error("¡Solicitud fallida! revisa el formulario");
             });

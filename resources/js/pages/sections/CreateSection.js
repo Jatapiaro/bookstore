@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import RoomForm from '../../components/forms/RoomForm';
-import Room from '../../models/Room';
+import SectionForm from '../../components/forms/SectionForm';
+import Section from '../../models/Section';
 import { toast } from 'react-toastify';
 
-export default class CreateRoom extends Component {
+export default class CreateSection extends Component {
 
     state = {
-        room: new Room(),
+        section: new Section(),
+        rooms: [],
         errors: {}
     };
 
@@ -15,11 +16,24 @@ export default class CreateRoom extends Component {
     }
 
     /**
+     * Executed before the page is rendered
+     */
+    componentWillMount() {
+        this.props.roomService.index()
+            .then(res => {
+                this.setState({rooms: res});
+            })
+            .catch(err => {
+                toast.error('¡Operación fallida!, inténtalo nuevamente');
+            });
+    }
+
+    /**
      * Return an error given a key
      * @param key or name of the error
      */
     getError = (key) => {
-        key = `room.${key}`;
+        key = `section.${key}`;
         let response = null;
         if (this.state.errors[key]) {
             response = '';
@@ -37,13 +51,13 @@ export default class CreateRoom extends Component {
      */
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.roomService.store(this.state.room)
+        this.props.sectionService.store(this.state.section)
             .then(res => {
-                toast.success('¡La sala ha sido creada!');
-                this.props.history.push('/rooms');
+                toast.success('¡La sección ha sido creada!');
+                this.props.history.push('/sections');
             })
             .catch(err => {
-                this.setState({errors: err.errors});
+                this.setState({ errors: err.errors });
                 toast.error("¡Solicitud fallida! revisa el formulario");
             });
     }
@@ -55,9 +69,9 @@ export default class CreateRoom extends Component {
      * @param e event
      */
     handleValueChange = (e) => {
-        let room = this.state.room;
-        room[e.target.name] = e.target.value;
-        this.setState({room: room});
+        let section = this.state.section;
+        section[e.target.name] = e.target.value;
+        this.setState({ section: section });
     }
 
     /**
@@ -66,11 +80,12 @@ export default class CreateRoom extends Component {
     render() {
         return (
             <div className="container">
-                <RoomForm formSubmitButtonText="Crear Sala"
+                <SectionForm formSubmitButtonText="Crear Sección"
                     getError={this.getError}
                     handleSubmit={this.handleSubmit}
                     handleValueChange={this.handleValueChange}
-                    room={this.state.room}/>
+                    rooms={this.state.rooms}
+                    section={this.state.section} />
             </div>
         );
     }

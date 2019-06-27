@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import AuthorForm from '../../components/forms/AuthorForm';
-import Author from '../../models/Author';
+import SectionForm from '../../components/forms/SectionForm';
+import Section from '../../models/Section';
 import { toast } from 'react-toastify';
 
-export default class EditAuthor extends Component {
+export default class EditSection extends Component {
 
     state = {
-        author: new Author(),
+        section: new Section(),
+        rooms: [],
         errors: {}
     };
 
@@ -15,18 +16,21 @@ export default class EditAuthor extends Component {
     }
 
     /**
-     * Executed before the page loads
+     * Executed before the page is rendered
      */
     componentWillMount() {
         let id = this.props.match.params.id;
-        this.props.authorService.show(id)
+        Promise.all([this.props.sectionService.show(id), this.props.roomService.index()])
             .then(res => {
-                let author = new Author();
-                author.fillFromResponse(res);
-                this.setState({ author: author });
+                let section = new Section();
+                section.fillFromResponse(res[0]);
+                this.setState({
+                    section: section,
+                    rooms: res[1]
+                });
             })
             .catch(err => {
-                toast.error("¡Solicitud fallida!");
+                toast.error('¡Solicitud Fallida! Inténtalo Nuevamente');
             });
     }
 
@@ -35,7 +39,7 @@ export default class EditAuthor extends Component {
      * @param key or name of the error
      */
     getError = (key) => {
-        key = `author.${key}`;
+        key = `section.${key}`;
         let response = null;
         if (this.state.errors[key]) {
             response = '';
@@ -53,10 +57,10 @@ export default class EditAuthor extends Component {
      */
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.authorService.update(this.state.author)
+        this.props.sectionService.update(this.state.section)
             .then(res => {
-                toast.success('¡El autor ha sido actualizado!');
-                this.props.history.push('/authors');
+                toast.success('¡La sección ha sido actualizada!');
+                this.props.history.push('/sections');
             })
             .catch(err => {
                 this.setState({ errors: err.errors });
@@ -71,9 +75,9 @@ export default class EditAuthor extends Component {
      * @param e event
      */
     handleValueChange = (e) => {
-        let author = this.state.author;
-        author[e.target.name] = e.target.value;
-        this.setState({ author: author });
+        let section = this.state.section;
+        section[e.target.name] = e.target.value;
+        this.setState({ section: section });
     }
 
     /**
@@ -82,11 +86,12 @@ export default class EditAuthor extends Component {
     render() {
         return (
             <div className="container">
-                <AuthorForm formSubmitButtonText="Editar Autor"
+                <SectionForm formSubmitButtonText="Editar Sección"
                     getError={this.getError}
                     handleSubmit={this.handleSubmit}
                     handleValueChange={this.handleValueChange}
-                    author={this.state.author} />
+                    rooms={this.state.rooms}
+                    section={this.state.section} />
             </div>
         );
     }
