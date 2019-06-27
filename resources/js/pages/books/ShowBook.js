@@ -99,6 +99,30 @@ export default class ShowBook extends Component {
                     book: book,
                     selectedAuthor: -1
                 });
+                toast.success('¡El autor ha sido añadido correctamente!');
+            })
+            .catch(err => {
+                console.log(err);
+                toast.error('¡Solicitud fallida!, Intentálo de nuevo');
+            });
+    }
+
+    /**
+     * Removes an author from this book
+     */
+    removeAuthor = (author) => {
+        this.props.bookService.author(this.state.book, author, false)
+            .then(res => {
+                let book = this.state.book;
+                book.authors = res;
+                let authors = this.state.authors;
+                authors[author].visible = true;
+                this.setState({
+                    authors: authors,
+                    book: book,
+                    selectedAuthor: -1
+                });
+                toast.success('¡El autor ha sido eliminado correctamente!');
             })
             .catch(err => {
                 console.log(err);
@@ -167,6 +191,12 @@ export default class ShowBook extends Component {
                                                 {a.name}
                                             </Table.Col>
                                             <Table.Col>
+                                                <Button type="button"
+                                                    onClick={() => { this.removeAuthor(a.id) }}
+                                                    icon="user-x"
+                                                    color="danger">
+                                                    Eliminar Autor
+                                                </Button>
                                             </Table.Col>
                                         </Table.Row>
                                     )
