@@ -5,34 +5,34 @@ import { Card, Dropdown, Table } from "tabler-react";
 import CardHeader from './../../components/CardHeader';
 import TableHeader from '../../components/TableHeader';
 import DeleteModal from '../../components/DeleteModal';
-import Room from '../../models/Room';
+import Author from '../../models/Author';
 
 import { toast } from 'react-toastify';
 
-export default class Rooms extends Component {
+export default class Authors extends Component {
 
     state = {
-        rooms: [],
+        authors: [],
         modal: {
             visible: false,
-            entityMessage: 'la sala',
-            room: new Room(),
+            entityMessage: 'al autor',
+            author: new Author(),
             index: -1,
         }
     }
 
     constructor(props) {
         super(props);
-        this.columns = ['ID', 'Nombre', 'Metros', ''];
+        this.columns = ['ID', 'Nombre', 'Libros Escritos', ''];
     }
 
     /**
      * Executes before the page is loaded
      */
     componentWillMount() {
-        this.props.roomService.index()
+        this.props.authorService.index()
             .then(res => {
-                this.setState({rooms: res});
+                this.setState({ authors: res });
             })
             .catch(err => {
                 toast.error("¡Solicitud fallida!");
@@ -43,7 +43,7 @@ export default class Rooms extends Component {
      * Goes to edit view
      */
     goToEditView = (id) => {
-        this.props.history.push(`rooms/${id}/edit`);
+        this.props.history.push(`authors/${id}/edit`);
     }
 
 
@@ -53,19 +53,19 @@ export default class Rooms extends Component {
     handleCancelDelete = () => {
         let modal = this.state.modal;
         modal.visible = false;
-        this.setState({modal: modal});
+        this.setState({ modal: modal });
     }
 
     /**
      * Aproves the element deletion
      */
     handleConfirmDelete = () => {
-        this.props.roomService.delete(this.state.modal.room)
+        this.props.authorService.delete(this.state.modal.author)
             .then(res => {
-                let rooms = this.state.rooms;
-                rooms.splice(this.state.modal.index, 1);
-                this.setState({rooms: rooms});
-                toast.success('La sala se ha eliminado!');
+                let authors = this.state.authors;
+                authors.splice(this.state.modal.index, 1);
+                this.setState({ authors: authors });
+                toast.success('El autor se ha eliminado!');
                 this.resetModal();
             })
             .catch(err => {
@@ -81,7 +81,7 @@ export default class Rooms extends Component {
         let modal = this.state.modal;
         modal.visible = false;
         modal.index = -1;
-        modal.room = new Room();
+        modal.author = new Author();
         this.setState({ modal: modal });
     }
 
@@ -92,8 +92,8 @@ export default class Rooms extends Component {
      */
     openDeleteModal = (index) => {
         let modal = this.state.modal;
-        let room = this.state.rooms[index];
-        modal.room = room;
+        let author = this.state.authors[index];
+        modal.author = author;
         modal.visible = true;
         modal.index = index;
         this.setState({ modal: modal });
@@ -107,24 +107,24 @@ export default class Rooms extends Component {
             <div className="container">
                 <Card>
                     <CardHeader
-                        title={"Salas"}
-                        redirectLink={"/rooms/create"}
+                        title={"Autores"}
+                        redirectLink={"/authors/create"}
                     />
                     <Card.Body>
                         <Table>
-                            <TableHeader cols={this.columns}/>
+                            <TableHeader cols={this.columns} />
                             <Table.Body>
                                 {
-                                    this.state.rooms.map((r, i) =>
-                                        <Table.Row key={`room-${i}`}>
+                                    this.state.authors.map((a, i) =>
+                                        <Table.Row key={`author-${i}`}>
                                             <Table.Col>
-                                                {r.id}
+                                                {a.id}
                                             </Table.Col>
                                             <Table.Col>
-                                                {r.name}
+                                                {a.name}
                                             </Table.Col>
                                             <Table.Col>
-                                                {r.meters}
+                                                {a.books.length}
                                             </Table.Col>
                                             <Table.Col>
                                                 <Dropdown
@@ -134,7 +134,7 @@ export default class Rooms extends Component {
                                                     items={[
                                                         <Dropdown.Item
                                                             key={1}
-                                                            onClick={() => this.goToEditView(r.id)}>
+                                                            onClick={() => this.goToEditView(a.id)}>
                                                             <i className="fe fe-edit-2" />
                                                             <span> Editar</span>
                                                         </Dropdown.Item>,
@@ -159,10 +159,10 @@ export default class Rooms extends Component {
                     handleCancelDelete={this.handleCancelDelete}
                     handleConfirmDelete={this.handleConfirmDelete}>
                     <p>
-                        <strong>ID</strong> {this.state.modal.room.id || ''}
+                        <strong>ID</strong> {this.state.modal.author.id || ''}
                     </p>
                     <p>
-                        <strong>Nombre</strong> {this.state.modal.room.name || ''}
+                        <strong>Nombre</strong> {this.state.modal.author.name || ''}
                     </p>
                 </DeleteModal>
             </div>

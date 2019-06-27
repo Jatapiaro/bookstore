@@ -13,6 +13,7 @@ export default class Navbar extends Component {
         super(props);
         this.navlinks = [
             new NavLink('Home', 'fa fa-home', '/', true),
+            new NavLink('Autores', 'fa fa-users', '/authors'),
             new NavLink('Salas', 'fa fa-bank', '/rooms'),
         ];
     }

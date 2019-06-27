@@ -16,7 +16,6 @@ export default class HttpService {
         return window.axios.post(endpoint, body, { headers: headers }).then(res => {
             return Promise.resolve(res.data.data);
         })
-
         .catch(err => {
             return Promise.reject(err.response.data);
         });

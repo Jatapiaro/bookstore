@@ -1,8 +1,8 @@
-export default class RoomService {
+export default class AuthorService {
 
     constructor(httpService) {
         this.httpService = httpService;
-        this.route = '/rooms';
+        this.route = '/authors';
     }
 
     index() {
@@ -26,8 +26,8 @@ export default class RoomService {
             });
     }
 
-    store(room) {
-        const body = this.getData(room);
+    store(author) {
+        const body = this.getData(author);
         return this.httpService.makePost(this.route, body)
             .then(res => {
                 return Promise.resolve(res);
@@ -37,9 +37,9 @@ export default class RoomService {
             });
     }
 
-    update(room) {
-        const route = `${this.route}/${room.id}`;
-        const body = this.getData(room);
+    update(author) {
+        const route = `${this.route}/${author.id}`;
+        const body = this.getData(author);
         return this.httpService.makePut(route, body)
             .then(res => {
                 return Promise.resolve(res);
@@ -49,8 +49,8 @@ export default class RoomService {
             });
     }
 
-    delete(room) {
-        const route = `${this.route}/${room.id}`;
+    delete(author) {
+        const route = `${this.route}/${author.id}`;
         return this.httpService.makeDelete(route)
             .then(res => {
                 return Promise.resolve(res);
@@ -60,9 +60,9 @@ export default class RoomService {
             });
     }
 
-    getData(room) {
+    getData(author) {
         return {
-            room: room
+            author: author
         }
     }
 
