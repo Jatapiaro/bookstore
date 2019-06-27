@@ -60,6 +60,20 @@ export default class BookService {
             });
     }
 
+    author(book, author, status = true) {
+        const route = `${this.route}/${book.id}/authors/${author}`;
+        const body = {
+            status: status
+        };
+        return this.httpService.makePost(route, body)
+            .then(res => {
+                return Promise.resolve(res);
+            })
+            .catch(err => {
+                return Promise.reject(err);
+            });
+    }
+
     getData(book) {
         return {
             book: book

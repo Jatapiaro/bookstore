@@ -8,6 +8,7 @@ export default class Book {
         this.release_date = moment();
         this.section_id = -1;
         this.section = null;
+        this.authors = [];
     }
 
     fillFromResponse(res) {
@@ -19,6 +20,7 @@ export default class Book {
             this.section_id = res.section_id;
             this.section = res.section;
         }
+        this.authors = res.authors;
     }
 
     /**

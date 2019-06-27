@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Api\V1\BaseController;
 use App\Http\Resources\Book as BookResource;
+use App\Http\Resources\Author as AuthorResource;
 use App\Models\Book;
 use App\Repositories\Interfaces\BookRepoInterface;
 use App\Repositories\Interfaces\AuthorRepoInterface;
@@ -101,7 +102,7 @@ class BooksController extends BaseController {
             $status = filter_var($status, FILTER_VALIDATE_BOOLEAN);
             $this->repo->authors($book->id, $author->id, $status);
         }
-        return new BookResource(Book::where('number_of_pages', '>', 0)->first());
+        return AuthorResource::collection($book->customAuthors());
     }
 
     /**

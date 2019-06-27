@@ -17,6 +17,7 @@ import EditAuthor from '../pages/authors/EditAuthor';
 import Books from '../pages/books/Books';
 import CreateBook from '../pages/books/CreateBook';
 import EditBook from '../pages/books/EditBook';
+import ShowBook from '../pages/books/ShowBook';
 
 // Rooms
 import Rooms from '../pages/rooms/Rooms';
@@ -116,6 +117,15 @@ export default class Wrapper extends Component {
                                         {...props}
                                         bookService={this.bookService}
                                         sectionService={this.sectionService}
+                                    />
+                                }
+                                exact={true} />
+                            <Route path="/books/:id"
+                                render={(props) =>
+                                    <ShowBook
+                                        {...props}
+                                        bookService={this.bookService}
+                                        authorService={this.authorService}
                                     />
                                 }
                                 exact={true} />

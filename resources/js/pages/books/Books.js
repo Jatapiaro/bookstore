@@ -50,8 +50,12 @@ export default class Books extends Component {
     /**
      * Goes to edit view
      */
-    goToEditView = (id) => {
-        this.props.history.push(`books/${id}/edit`);
+    goToEditView = (id, edit = true) => {
+        if (edit) {
+            this.props.history.push(`books/${id}/edit`);
+        } else {
+            this.props.history.push(`books/${id}`);
+        }
     }
 
 
@@ -157,12 +161,18 @@ export default class Books extends Component {
                                                     items={[
                                                         <Dropdown.Item
                                                             key={1}
+                                                            onClick={() => this.goToEditView(b.id, false)}>
+                                                            <i className="fe fe-eye" />
+                                                            <span> Ver</span>
+                                                        </Dropdown.Item>,
+                                                        <Dropdown.Item
+                                                            key={2}
                                                             onClick={() => this.goToEditView(b.id)}>
                                                             <i className="fe fe-edit-2" />
                                                             <span> Editar</span>
                                                         </Dropdown.Item>,
                                                         <Dropdown.Item
-                                                            key={2}
+                                                            key={3}
                                                             onClick={() => this.openDeleteModal(i)}>
                                                             <i className="fe fe-trash-2" />
                                                             <span> Borrar</span>

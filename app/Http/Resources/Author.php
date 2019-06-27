@@ -16,6 +16,8 @@ class Author extends JsonResource
     {
         $data = parent::toArray($request);
         $data['books'] = $this->customBooks();
+        // Auxiliar variable for client
+        $data['visible'] = true;
         return $data;
     }
 }
