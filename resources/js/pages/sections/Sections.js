@@ -19,7 +19,7 @@ export default class Sections extends Component {
             section: new Section(),
             index: -1,
         }
-    }
+    };
 
     constructor(props) {
         super(props);

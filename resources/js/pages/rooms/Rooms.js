@@ -19,7 +19,7 @@ export default class Rooms extends Component {
             room: new Room(),
             index: -1,
         }
-    }
+    };
 
     constructor(props) {
         super(props);

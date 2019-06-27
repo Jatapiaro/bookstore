@@ -5,34 +5,42 @@ import { Card, Dropdown, Table } from "tabler-react";
 import CardHeader from './../../components/CardHeader';
 import TableHeader from '../../components/TableHeader';
 import DeleteModal from '../../components/DeleteModal';
-import Author from '../../models/Author';
+import Book from '../../models/Book';
 
 import { toast } from 'react-toastify';
 
-export default class Authors extends Component {
+export default class Books extends Component {
 
     state = {
-        authors: [],
+        books: [],
         modal: {
             visible: false,
-            entityMessage: 'al autor',
-            author: new Author(),
+            entityMessage: 'el libro',
+            book: new Book(),
             index: -1,
         }
     };
 
     constructor(props) {
         super(props);
-        this.columns = ['ID', 'Nombre', 'Libros Escritos', ''];
+        this.columns = [
+            'ID',
+            'Nombre',
+            '# de Páginas',
+            'Fecha de Salida',
+            'Autores',
+            'Sección',
+            ''
+        ];
     }
 
     /**
      * Executes before the page is loaded
      */
     componentWillMount() {
-        this.props.authorService.index()
+        this.props.bookService.index()
             .then(res => {
-                this.setState({ authors: res });
+                this.setState({ books: res });
             })
             .catch(err => {
                 toast.error("¡Solicitud fallida!");
@@ -43,7 +51,7 @@ export default class Authors extends Component {
      * Goes to edit view
      */
     goToEditView = (id) => {
-        this.props.history.push(`authors/${id}/edit`);
+        this.props.history.push(`books/${id}/edit`);
     }
 
 
@@ -60,12 +68,12 @@ export default class Authors extends Component {
      * Aproves the element deletion
      */
     handleConfirmDelete = () => {
-        this.props.authorService.delete(this.state.modal.author)
+        this.props.bookService.delete(this.state.modal.book)
             .then(res => {
-                let authors = this.state.authors;
-                authors.splice(this.state.modal.index, 1);
-                this.setState({ authors: authors });
-                toast.success('El autor se ha eliminado!');
+                let books = this.state.books;
+                books.splice(this.state.modal.index, 1);
+                this.setState({ books: books });
+                toast.success('La sala se ha eliminado!');
                 this.resetModal();
             })
             .catch(err => {
@@ -81,7 +89,7 @@ export default class Authors extends Component {
         let modal = this.state.modal;
         modal.visible = false;
         modal.index = -1;
-        modal.author = new Author();
+        modal.book = new Book();
         this.setState({ modal: modal });
     }
 
@@ -92,8 +100,8 @@ export default class Authors extends Component {
      */
     openDeleteModal = (index) => {
         let modal = this.state.modal;
-        let author = this.state.authors[index];
-        modal.author = author;
+        let book = this.state.books[index];
+        modal.book = book;
         modal.visible = true;
         modal.index = index;
         this.setState({ modal: modal });
@@ -107,24 +115,39 @@ export default class Authors extends Component {
             <div className="container">
                 <Card>
                     <CardHeader
-                        title={"Autores"}
-                        redirectLink={"/authors/create"}
+                        title={"Libros"}
+                        redirectLink={"/books/create"}
                     />
                     <Card.Body>
                         <Table>
                             <TableHeader cols={this.columns} />
                             <Table.Body>
                                 {
-                                    this.state.authors.map((a, i) =>
-                                        <Table.Row key={`author-${i}`}>
+                                    this.state.books.map((b, i) =>
+                                        <Table.Row key={`book-${i}`}>
                                             <Table.Col>
-                                                {a.id}
+                                                {b.id}
                                             </Table.Col>
                                             <Table.Col>
-                                                {a.name}
+                                                {b.name}
                                             </Table.Col>
                                             <Table.Col>
-                                                {a.books.length}
+                                                {b.number_of_pages}
+                                            </Table.Col>
+                                            <Table.Col>
+                                                {b.release_date}
+                                            </Table.Col>
+                                            <Table.Col>
+                                                {
+                                                    b.authors.map((a) => a.name).join(', ')
+                                                }
+                                            </Table.Col>
+                                            <Table.Col>
+                                                {
+                                                    `${b.section !== null ?
+                                                    `${b.section.id} - ${b.section.name}`
+                                                    : 'N/A'}`
+                                                }
                                             </Table.Col>
                                             <Table.Col>
                                                 <Dropdown
@@ -134,7 +157,7 @@ export default class Authors extends Component {
                                                     items={[
                                                         <Dropdown.Item
                                                             key={1}
-                                                            onClick={() => this.goToEditView(a.id)}>
+                                                            onClick={() => this.goToEditView(b.id)}>
                                                             <i className="fe fe-edit-2" />
                                                             <span> Editar</span>
                                                         </Dropdown.Item>,
@@ -159,10 +182,10 @@ export default class Authors extends Component {
                     handleCancelDelete={this.handleCancelDelete}
                     handleConfirmDelete={this.handleConfirmDelete}>
                     <p>
-                        <strong>ID</strong> {this.state.modal.author.id || ''}
+                        <strong>ID</strong> {this.state.modal.book.id || ''}
                     </p>
                     <p>
-                        <strong>Nombre</strong> {this.state.modal.author.name || ''}
+                        <strong>Nombre</strong> {this.state.modal.book.name || ''}
                     </p>
                 </DeleteModal>
             </div>

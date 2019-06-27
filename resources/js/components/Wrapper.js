@@ -13,6 +13,11 @@ import Authors from '../pages/authors/Authors';
 import CreateAuthor from '../pages/authors/CreateAuthor';
 import EditAuthor from '../pages/authors/EditAuthor';
 
+// Books
+import Books from '../pages/books/Books';
+import CreateBook from '../pages/books/CreateBook';
+import EditBook from '../pages/books/EditBook';
+
 // Rooms
 import Rooms from '../pages/rooms/Rooms';
 import CreateRoom from '../pages/rooms/CreateRoom';
@@ -26,6 +31,7 @@ import EditSection from '../pages/sections/EditSection';
 // Services
 import HttpService from '../services/HttpService';
 import AuthorService from '../services/AuthorService';
+import BookService from '../services/BookService';
 import RoomService from '../services/RoomService';
 import SectionService from '../services/SectionService';
 
@@ -39,6 +45,7 @@ export default class Wrapper extends Component {
         // Define your singleton services here
         this.httpService = new HttpService();
         this.authorService = new AuthorService(this.httpService);
+        this.bookService = new BookService(this.httpService);
         this.roomService = new RoomService(this.httpService);
         this.sectionService = new SectionService(this.httpService);
     }
@@ -81,6 +88,34 @@ export default class Wrapper extends Component {
                                     <EditAuthor
                                         {...props}
                                         authorService={this.authorService}
+                                    />
+                                }
+                                exact={true} />
+
+                            {/* ============= Books =========== */}
+                            <Route path="/books"
+                                render={(props) =>
+                                    <Books
+                                        {...props}
+                                        bookService={this.bookService}
+                                    />
+                                }
+                                exact={true} />
+                            <Route path="/books/create"
+                                render={(props) =>
+                                    <CreateBook
+                                        {...props}
+                                        bookService={this.bookService}
+                                        sectionService={this.sectionService}
+                                    />
+                                }
+                                exact={true} />
+                            <Route path="/books/:id/edit"
+                                render={(props) =>
+                                    <EditBook
+                                        {...props}
+                                        bookService={this.bookService}
+                                        sectionService={this.sectionService}
                                     />
                                 }
                                 exact={true} />
