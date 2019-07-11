@@ -14,7 +14,7 @@ class BookRepo extends BaseEloquentRepo implements BookRepoInterface
 {
     public function __construct(Book $entity) {
         $this->model = $entity;
-        $this->tableName = strtolower($entity->getTableName());
+        $this->tableName = $entity->getTableName();
         $this->fillableAttributes = $entity->getFillableAttributes();
     }
 

@@ -12,7 +12,7 @@ class SectionRepo extends BaseEloquentRepo implements SectionRepoInterface
 {
     public function __construct(Section $entity) {
         $this->model = $entity;
-        $this->tableName = strtolower($entity->getTableName());
+        $this->tableName = $entity->getTableName();
         $this->fillableAttributes = $entity->getFillableAttributes();
     }
 }

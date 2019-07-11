@@ -12,7 +12,7 @@ class AuthorRepo extends BaseEloquentRepo implements AuthorRepoInterface
 {
     public function __construct(Author $entity) {
         $this->model = $entity;
-        $this->tableName = strtolower($entity->getTableName());
+        $this->tableName = $entity->getTableName();
         $this->fillableAttributes = $entity->getFillableAttributes();
     }
 }
