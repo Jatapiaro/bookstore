@@ -41,7 +41,7 @@ class Section extends BaseModel
      */
     public function customRoom() {
         $query = "SELECT r.*
-            FROM Sections s
+            FROM sections s
             JOIN rooms r
             ON r.id = s.room_id
             WHERE s.id = :id;";
