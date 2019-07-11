@@ -12,6 +12,9 @@ export default class NavLink {
             const aux = `${window.baseUrl}/`;
             return window.location.href == aux;
         }
+        if (this.route === '/books' && window.location.href.indexOf('bookstore') !== -1) {
+            return window.location.href.endsWith(this.route);
+        }
         const route = window.location.href;
         return route.indexOf(this.route) !== -1;
     }
